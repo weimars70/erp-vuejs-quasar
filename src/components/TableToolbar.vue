@@ -55,7 +55,7 @@ defineEmits(['register', 'search', 'toggle-density', 'export']);
 <style lang="scss" scoped>
 .q-btn {
   &.text-secondary {
-    color: #26a69a !important;
+    color: #767b7b !important;
   }
 }
 </style>

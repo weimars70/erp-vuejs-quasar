@@ -231,7 +231,7 @@ const loadGroups = async () => {
     $q.notify({
       type: 'negative',
       message: 'Error al cargar grupos',
-      position: 'top'
+      position: 'center'
     });
   } finally {
     loading.value = false;
@@ -277,14 +277,14 @@ const saveGroup = async (formData: Partial<Group>) => {
     $q.notify({
       type: 'positive',
       message: `Grupo ${editingGroup.value ? 'actualizado' : 'creado'} exitosamente`,
-      position: 'top'
+      position: 'center'
     });
   } catch (error) {
     console.error('Error saving group:', error);
     $q.notify({
       type: 'negative',
       message: `Error al ${editingGroup.value ? 'actualizar' : 'crear'} el grupo`,
-      position: 'top'
+      position: 'center'
     });
   } finally {
     saving.value = false;
@@ -305,14 +305,14 @@ const confirmDelete = (group: Group) => {
       $q.notify({
         type: 'positive',
         message: 'Grupo eliminado exitosamente',
-        position: 'top'
+        position: 'center'
       });
     } catch (error) {
       console.error('Error deleting group:', error);
       $q.notify({
         type: 'negative',
         message: 'Error al eliminar el grupo',
-        position: 'top'
+        position: 'center'
       });
     }
   });
@@ -323,7 +323,7 @@ const exportToExcel = () => {
     $q.notify({
       type: 'warning',
       message: 'No hay datos para exportar',
-      position: 'top'
+      position: 'center'
     });
     return;
   }

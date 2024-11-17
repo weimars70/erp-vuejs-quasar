@@ -65,7 +65,7 @@ defineEmits<{
 <style lang="scss" scoped>
 .drawer-custom {
   .q-drawer__content {
-    background: #ffffff;
+    background: #049115;
   }
   
   .q-item-label.header {

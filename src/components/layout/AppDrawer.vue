@@ -52,12 +52,12 @@ defineEmits<{
 <style lang="scss" scoped>
 .drawer-item {
   border-radius: 8px;
-  margin: 4px 8px;
+  margin: 2px 4px;
   height: 40px;
   
   &.q-item--active {
     background: var(--q-primary);
-    color: white;
+    color: rgb(230, 11, 19);
   }
 }
 

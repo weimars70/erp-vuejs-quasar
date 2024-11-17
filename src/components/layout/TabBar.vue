@@ -78,7 +78,7 @@ const currentTab = computed({
   right: 0;
   left: 0;
   z-index: 1000;
-  background: #7dcea0;
+  background: #828684;
   border-top: 1px solid rgba(0, 0, 0, 0.12);
   transition: all 0.3s ease;
   width: 100%;

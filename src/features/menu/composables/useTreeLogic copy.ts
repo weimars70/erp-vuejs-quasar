@@ -42,7 +42,7 @@ export function useTreeLogic() {
       $q.notify({ 
         type: 'negative', 
         message: 'Error al cargar datos del árbol',
-        position: 'top'
+        position: 'center'
       });
     }
   };
@@ -145,7 +145,7 @@ export function useTreeLogic() {
       $q.notify({
         type: 'negative',
         message: 'Error al cargar roles',
-        position: 'top'
+        position: 'center'
       });
     } finally {
       loadingRoles.value = false;
@@ -166,7 +166,7 @@ export function useTreeLogic() {
       $q.notify({
         type: 'negative',
         message: 'Error al cargar menú del rol',
-        position: 'top'
+        position: 'center'
       });
     }
   };
@@ -228,7 +228,7 @@ export function useTreeLogic() {
       $q.notify({
         type: 'warning',
         message: 'Por favor seleccione un rol',
-        position: 'top'
+        position: 'center'
       });
       return;
     }
@@ -241,14 +241,14 @@ export function useTreeLogic() {
       $q.notify({
         type: 'positive',
         message: 'Selección guardada exitosamente',
-        position: 'top'
+        position: 'center'
       });
     } catch (error) {
       console.error('Error saving selection:', error);
       $q.notify({
         type: 'negative',
         message: 'Error al guardar la selección',
-        position: 'top'
+        position: 'center'
       });
     } finally {
       saving.value = false;

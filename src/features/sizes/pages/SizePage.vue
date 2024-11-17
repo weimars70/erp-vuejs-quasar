@@ -231,7 +231,7 @@ const loadSizes = async () => {
     $q.notify({
       type: 'negative',
       message: 'Error al cargar tallas',
-      position: 'top'
+      position: 'center'
     });
   } finally {
     loading.value = false;
@@ -278,14 +278,14 @@ const saveSize = async (formData: Partial<Size>) => {
     $q.notify({
       type: 'positive',
       message: `Talla ${editingSize.value ? 'actualizada' : 'creada'} exitosamente`,
-      position: 'top'
+      position: 'center'
     });
   } catch (error) {
     console.error('Error saving size:', error);
     $q.notify({
       type: 'negative',
       message: `Error al ${editingSize.value ? 'actualizar' : 'crear'} la talla`,
-      position: 'top'
+      position: 'center'
     });
   } finally {
     saving.value = false;
@@ -306,14 +306,14 @@ const confirmDelete = (size: Size) => {
       $q.notify({
         type: 'positive',
         message: 'Talla eliminada exitosamente',
-        position: 'top'
+        position: 'center'
       });
     } catch (error) {
       console.error('Error deleting size:', error);
       $q.notify({
         type: 'negative',
         message: 'Error al eliminar la talla',
-        position: 'top'
+        position: 'center'
       });
     }
   });
@@ -324,7 +324,7 @@ const exportToExcel = () => {
     $q.notify({
       type: 'warning',
       message: 'No hay datos para exportar',
-      position: 'top'
+      position: 'center'
     });
     return;
   }

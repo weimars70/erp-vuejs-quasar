@@ -231,7 +231,7 @@ const loadRoles = async () => {
     $q.notify({
       type: 'negative',
       message: 'Error al cargar roles',
-      position: 'top'
+      position: 'center'
     });
   } finally {
     loading.value = false;
@@ -278,14 +278,14 @@ const saveRole = async (formData: Partial<Role>) => {
     $q.notify({
       type: 'positive',
       message: `Rol ${editingRole.value ? 'actualizado' : 'creado'} exitosamente`,
-      position: 'top'
+      position: 'center'
     });
   } catch (error) {
     console.error('Error saving role:', error);
     $q.notify({
       type: 'negative',
       message: `Error al ${editingRole.value ? 'actualizar' : 'crear'} el rol`,
-      position: 'top'
+      position: 'center'
     });
   } finally {
     saving.value = false;
@@ -306,14 +306,14 @@ const confirmDelete = (role: Role) => {
       $q.notify({
         type: 'positive',
         message: 'Rol eliminado exitosamente',
-        position: 'top'
+        position: 'center'
       });
     } catch (error) {
       console.error('Error deleting role:', error);
       $q.notify({
         type: 'negative',
         message: 'Error al eliminar el rol',
-        position: 'top'
+        position: 'center'
       });
     }
   });
@@ -324,7 +324,7 @@ const exportToExcel = () => {
     $q.notify({
       type: 'warning',
       message: 'No hay datos para exportar',
-      position: 'top'
+      position: 'center'
     });
     return;
   }

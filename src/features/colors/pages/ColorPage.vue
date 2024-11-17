@@ -232,7 +232,7 @@ const loadColors = async () => {
     $q.notify({
       type: 'negative',
       message: 'Error al cargar colores',
-      position: 'top'
+      position: 'center'
     });
   } finally {
     loading.value = false;
@@ -277,14 +277,14 @@ const saveColor = async (formData: Partial<Color>) => {
     $q.notify({
       type: 'positive',
       message: `Color ${editingColor.value ? 'actualizado' : 'creado'} exitosamente`,
-      position: 'top'
+      position: 'center'
     });
   } catch (error) {
     console.error('Error saving color:', error);
     $q.notify({
       type: 'negative',
       message: `Error al ${editingColor.value ? 'actualizar' : 'crear'} el color`,
-      position: 'top'
+      position: 'center'
     });
   } finally {
     saving.value = false;
@@ -305,14 +305,14 @@ const confirmDelete = (color: Color) => {
       $q.notify({
         type: 'positive',
         message: 'Color eliminado exitosamente',
-        position: 'top'
+        position: 'center'
       });
     } catch (error) {
       console.error('Error deleting color:', error);
       $q.notify({
         type: 'negative',
         message: 'Error al eliminar el color',
-        position: 'top'
+        position: 'center'
       });
     }
   });
@@ -323,7 +323,7 @@ const exportToExcel = () => {
     $q.notify({
       type: 'warning',
       message: 'No hay datos para exportar',
-      position: 'top'
+      position: 'center'
     });
     return;
   }

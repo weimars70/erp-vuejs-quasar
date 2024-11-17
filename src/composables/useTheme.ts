@@ -8,7 +8,6 @@ export interface Theme {
   accent: string;
   background: string;
 }
-
 export const themes: Theme[] = [
   {
     name: 'Tecnológico',
@@ -25,70 +24,28 @@ export const themes: Theme[] = [
     background: 'FFFFFF'
   },
   {
-    name: 'Gris Profesional',
+    name: 'Ejecutivo Oscuro',
     primary: '424242',
     secondary: 'BBDEFB',
     accent: '2E7D32',
-    background: 'FFFDE7'
-  },
-  {
-    name: 'Mandarina',
-    primary: 'FF8C42',
-    secondary: '37474F',
-    accent: 'A5D6A7',
     background: 'FFFFFF'
   },
   {
-    name: 'Azul Cielo',
-    primary: '64B5F6',
-    secondary: 'F9A825',
-    accent: 'ECEFF1',
-    background: '212121'
-  },
-  {
-    name: 'Verde Oliva',
-    primary: '8D6E63',
-    secondary: 'FF7043',
-    accent: 'E0E0E0',
-    background: 'FFFFFF'
-  },
-  {
-    name: 'Azul Marino Profundo',
+    name: 'Corporativo Índigo',
     primary: '0D47A1',
-    secondary: 'FF5722',
-    accent: 'C8E6C9',
-    background: '37474F'
-  },
-  {
-    name: 'Marrón Elegante',
-    primary: '3E2723',
-    secondary: 'AED581',
-    accent: 'F5F5F5',
-    background: 'FFF8E1'
-  },
-  {
-    name: 'Gris Oscuro',
-    primary: '263238',
-    secondary: 'FF8F00',
-    accent: 'B3E5FC',
+    secondary: 'CFD8DC',
+    accent: '66BB6A',
     background: 'FFFFFF'
   },
   {
-    name: 'Azul Corporativo',
-    primary: '0D47A1',
-    secondary: '66BB6A',
-    accent: 'CFD8DC',
-    background: 'FFAB91'
+    name: 'Elegante Gris',
+    primary: '37474F',
+    secondary: '90A4AE',
+    accent: 'FF8F00',
+    background: 'FFFFFF'
   },
   {
-    name: 'Negro Moderno',
-    primary: '212121',
-    secondary: 'FF7043',
-    accent: 'A5D6A7',
-    background: 'F1F1F1'
-  },
-  {
-    name: 'Verde Naturaleza',
+    name: 'Moderno Verde',
     primary: '2E7D32',
     secondary: 'FDD835',
     accent: 'F1F8E9',
@@ -102,28 +59,28 @@ export const themes: Theme[] = [
     background: 'FFFFFF'
   },
   {
-    name: 'Rojo Ejecutivo',
+    name: 'Empresarial Rojo',
     primary: 'B71C1C',
     secondary: '455A64',
     accent: 'FFEBEE',
-    background: 'FAFAFA'
+    background: 'FFFFFF'
   },
   {
-    name: 'Verde Agua',
+    name: 'Verde Esmeralda',
     primary: '00695C',
     secondary: 'FF6F00',
     accent: 'E0F2F1',
     background: 'FFFFFF'
   },
   {
-    name: 'Índigo Noche',
+    name: 'Azul Noche',
     primary: '1A237E',
     secondary: '00BFA5',
     accent: 'E8EAF6',
     background: 'FFFFFF'
   },
   {
-    name: 'Ámbar Dorado',
+    name: 'Dorado Premium',
     primary: 'FF6F00',
     secondary: '37474F',
     accent: 'FFF8E1',
@@ -134,20 +91,6 @@ export const themes: Theme[] = [
     primary: '1B5E20',
     secondary: 'FFA000',
     accent: 'E8F5E9',
-    background: 'FFFFFF'
-  },
-  {
-    name: 'Azul Nórdico',
-    primary: '0277BD',
-    secondary: 'FFB300',
-    accent: 'E1F5FE',
-    background: 'FFFFFF'
-  },
-  {
-    name: 'Gris Plata',
-    primary: '455A64',
-    secondary: '00BCD4',
-    accent: 'ECEFF1',
     background: 'FFFFFF'
   }
 ];

@@ -277,7 +277,7 @@ const loadUsers = async () => {
     $q.notify({
       type: 'negative',
       message: 'Error al cargar usuarios',
-      position: 'top'
+      position: 'center'
     });
   } finally {
     loading.value = false;
@@ -325,14 +325,14 @@ const saveUser = async (formData: Partial<User>) => {
     $q.notify({
       type: 'positive',
       message: `Usuario ${editingUser.value ? 'actualizado' : 'creado'} exitosamente`,
-      position: 'top'
+      position: 'center'
     });
   } catch (error) {
     console.error('Error saving user:', error);
     $q.notify({
       type: 'negative',
       message: `Error al ${editingUser.value ? 'actualizar' : 'crear'} el usuario`,
-      position: 'top'
+      position: 'center'
     });
   } finally {
     saving.value = false;
@@ -353,14 +353,14 @@ const confirmDelete = (user: User) => {
       $q.notify({
         type: 'positive',
         message: 'Usuario eliminado exitosamente',
-        position: 'top'
+        position: 'center'
       });
     } catch (error) {
       console.error('Error deleting user:', error);
       $q.notify({
         type: 'negative',
         message: 'Error al eliminar el usuario',
-        position: 'top'
+        position: 'center'
       });
     }
   });
@@ -371,7 +371,7 @@ const exportToExcel = () => {
     $q.notify({
       type: 'warning',
       message: 'No hay datos para exportar',
-      position: 'top'
+      position: 'center'
     });
     return;
   }

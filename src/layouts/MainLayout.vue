@@ -136,7 +136,7 @@
       <router-view />
     </q-page-container>
 
-    <q-footer class="bg-green-2">
+    <q-footer class="bg-gray-1">
       <div class="row items-center q-px-md">
         <q-tabs
           v-model="currentTab"
@@ -347,7 +347,7 @@ const openInTab = (node: MenuNode) => {
 <style lang="scss" scoped>
 .branch-select {
   width: 200px;
-  background: white;
+  background: rgb(243, 227, 4);
   border-radius: 4px;
   
   :deep(.q-field__control) {
@@ -435,23 +435,25 @@ const openInTab = (node: MenuNode) => {
 }
 
 .q-footer {
-  background: #7dcea0 !important;
+  background: #9ea49d !important;
   padding: 4px 0;
 }
+
+
 
 .q-drawer {
   .q-item {
     border-radius: 8px;
     margin: 4px 8px;
     height: 40px;
-    
+
     &:hover {
-      background: rgba(0, 0, 0, 0.05);
+      background: rgba(54, 233, 9, 0.05);
     }
-    
+
     &--active {
       background: var(--q-primary);
-      color: white;
+      color: rgba(255, 255, 255, 0.453);
     }
   }
 }
