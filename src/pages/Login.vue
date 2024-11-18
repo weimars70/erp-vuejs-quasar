@@ -53,6 +53,7 @@
               outlined
               dense
               :rules="[val => !!val || 'Usuario es requerido']"
+              :disable="loading"
             >
               <template v-slot:prepend>
                 <q-icon name="person" color="primary" />
@@ -66,6 +67,7 @@
               dense
               :type="showPassword ? 'text' : 'password'"
               :rules="[val => !!val || 'Contraseña es requerida']"
+              :disable="loading"
             >
               <template v-slot:prepend>
                 <q-icon name="lock" color="primary" />
@@ -89,6 +91,7 @@
               emit-value
               map-options
               :rules="[val => !!val || 'Sucursal es requerida']"
+              :disable="loading"
             >
               <template v-slot:prepend>
                 <q-icon name="business" color="primary" />
@@ -96,8 +99,8 @@
             </q-select>
 
             <div class="row items-center justify-between q-mt-md">
-              <q-checkbox v-model="rememberMe" label="Recordarme" dense color="primary" />
-              <q-btn flat dense color="primary" label="¿Olvidó su contraseña?" />
+              <q-checkbox v-model="rememberMe" label="Recordarme" dense color="primary" :disable="loading" />
+              <q-btn flat dense color="primary" label="¿Olvidó su contraseña?" :disable="loading" />
             </div>
 
             <q-btn
@@ -147,12 +150,24 @@ async function onSubmit() {
       username: form.value.username,
       password: form.value.password
     });
+    
+    // Set selected branch
+    auth.setBranch(selectedBranch.value);
+    
+    // Show success notification
+    $q.notify({
+      type: 'positive',
+      message: 'Inicio de sesión exitoso',
+      position: 'center'
+    });
+
+    // Redirect to home page
     router.push('/');
   } catch (error: any) {
     $q.notify({
-      color: 'negative',
-      message: error.message || 'Credenciales inválidas',
-      icon: 'error'
+      type: 'negative',
+      message: error.message || 'Error al iniciar sesión',
+      position: 'center'
     });
   } finally {
     loading.value = false;

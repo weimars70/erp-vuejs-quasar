@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import { api } from 'src/boot/axios';
 
 interface User {
   id: string;
@@ -11,6 +12,13 @@ interface AuthState {
   user: User | null;
   token: string | null;
   branch: string;
+}
+
+interface LoginResponse {
+  success: boolean;
+  message: string;
+  token: string;
+  user: User;
 }
 
 export const useAuthStore = defineStore('auth', {
@@ -26,20 +34,33 @@ export const useAuthStore = defineStore('auth', {
 
   actions: {
     async login(credentials: { username: string; password: string }) {
-      // Check for admin credentials
-      if (credentials.username === 'admin' && credentials.password === 'admin') {
-        this.token = 'admin-token';
-        this.user = {
-          id: '1',
-          name: 'Administrador',
-          email: 'admin@example.com',
-          avatar: 'https://cdn.quasar.dev/img/avatar.png'
-        };
-        return true;
-      }
+      console.log('credentials', credentials);
+      const data = {
+        username: credentials.username,
+        password: btoa(credentials.password)
+      };
       
-      // If not admin credentials, throw error
-      throw new Error('Credenciales inválidas');
+      try {
+        const response = await api.post<LoginResponse>('/usuarios/login', data);
+        const resp = response.data;
+  
+        if (!resp.success) throw new Error(resp.message);
+       
+        const jsonData = JSON.parse(JSON.stringify(response.data.message));
+        
+        //console.log('response login response:', rpta.user);
+        // Store token and user data
+        this.token = jsonData.token;
+        this.user = jsonData.user;
+
+        // Set token in axios default headers
+        api.defaults.headers.common['Authorization'] = `Bearer ${this.token}`;
+
+        return true;
+      } catch (error: any) {
+        console.error('Login error:', error);
+        throw new Error(error.response?.data?.message || 'Credenciales inválidas');
+      }
     },
 
     setBranch(branch: string) {
@@ -50,6 +71,9 @@ export const useAuthStore = defineStore('auth', {
       this.user = null;
       this.token = null;
       this.branch = 'main';
+      
+      // Remove token from axios headers
+      delete api.defaults.headers.common['Authorization'];
     }
   },
 
