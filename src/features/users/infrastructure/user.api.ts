@@ -26,7 +26,7 @@ export class UserApi implements UserRepository {
         usuario: userData.usuario,
         nombre: userData.nombre,
         email: userData.email,
-        clave: userData.clave,
+        clave:  btoa(userData.clave),
         rol: userData.rol
       });
       return response.data;

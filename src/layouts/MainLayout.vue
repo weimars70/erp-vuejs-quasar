@@ -84,8 +84,8 @@
               <q-avatar size="28px" class="q-mr-xs">
                 <img src="https://cdn.quasar.dev/img/avatar.png" />
               </q-avatar>
-              <div class="text-white">{{ auth.user?.name || 'ADMIN' }}</div>
-              <q-icon name="arrow_drop_down" />
+              <div class="text-white">{{ auth.user || 'ADMIN' }}</div>
+              
             </div>
           </template>
 
@@ -263,19 +263,6 @@ const isDark = computed({
   set: (value) => $q.dark.set(value)
 });
 
-
-
-/*const menuItems = [
-  { path: '/', label: 'Inicio', icon: 'home' },
-  { path: '/colors', label: 'Colores', icon: 'palette' },
-  { path: '/sizes', label: 'Tallas', icon: 'straighten' },
-  { path: '/item-groups', label: 'Grupos', icon: 'category' },
-  { path: '/purchases', label: 'Compras', icon: 'shopping_cart' },
-  { path: '/roles', label: 'Roles', icon: 'admin_panel_settings' },
-  { path: '/permisos', label: 'Permisos', icon: 'admin_panel_settings' }
-];*/
-
-
 function toggleLeftDrawer() {
   leftDrawerOpen.value = !leftDrawerOpen.value;
 }
@@ -334,7 +321,9 @@ const openInTab = (node: MenuNode) => {
 }
 
   onMounted(async () => {
-    menuItems.value = await menuService.getMenuItems();
+    //menuItems.value = await menuService.getMenuItems();
+    menuItems.value = await menuService.getMenuRol(Number (auth.rol));
+
     console.log('menuItems.value :::', menuItems.value );
     setTheme(themes[0]);
     if (!auth.isAuthenticated) {

@@ -72,18 +72,41 @@
 
             <div class="row q-col-gutter-md">
               <div class="col-12 col-md-3">
-                <q-input
+                <q-select
                   v-model="selectedItemDisplay"
                   label="Artículo *"
                   outlined
                   dense
-                  readonly
-                  @click="showItemSelector = true"
+                  use-input
+                  hide-selected
+                  fill-input
+                  input-debounce="300"
+                  @filter="filterItems"
+                  @input-value="val => itemSearch = val"
+                  @update:model-value="onItemSelect"
                 >
-                  <template v-slot:append>
-                    <q-icon name="search" class="cursor-pointer" @click="showItemSelector = true" />
+                  <template v-slot:no-option>
+                    <q-item>
+                      <q-item-section class="text-grey">
+                        No hay resultados
+                      </q-item-section>
+                    </q-item>
                   </template>
-                </q-input>
+
+                  <template v-slot:option="scope">
+                    <q-item v-bind="scope.itemProps">
+                      <q-item-section>
+                        <q-item-label>{{ scope.opt.code }} - {{ scope.opt.name }}</q-item-label>
+                        <q-item-label caption>
+                          <div class="row items-center text-primary">
+                            <div class="col">Precio: {{ formatCurrency(scope.opt.price) }}</div>
+                            <div class="col">Stock: {{ scope.opt.stock }}</div>
+                          </div>
+                        </q-item-label>
+                      </q-item-section>
+                    </q-item>
+                  </template>
+                </q-select>
               </div>
               <div class="col-12 col-md-1">
                 <q-input
@@ -191,66 +214,19 @@
         </q-card-section>
       </q-card>
     </div>
-
-    <!-- Item Selector Dialog -->
-    <q-dialog v-model="showItemSelector" position="right">
-      <q-card style="width: 900px; max-width: 90vw;">
-        <q-card-section class="row items-center">
-          <div class="text-h6">Seleccionar Artículo</div>
-          <q-space />
-          <q-btn icon="close" flat round dense v-close-popup />
-        </q-card-section>
-
-        <q-card-section>
-          <q-input
-            v-model="itemSearch"
-            dense
-            outlined
-            placeholder="Buscar artículo"
-            class="q-mb-md"
-          >
-            <template v-slot:append>
-              <q-icon name="search" />
-            </template>
-          </q-input>
-
-          <q-table
-            :rows="filteredItems"
-            :columns="itemColumns"
-            row-key="id"
-            dense
-            :pagination="{ rowsPerPage: 10 }"
-            :filter="itemSearch"
-          >
-            <template v-slot:body="props">
-              <q-tr
-                :props="props"
-                class="cursor-pointer"
-                @click="selectItem(props.row)"
-              >
-                <q-td v-for="col in props.cols" :key="col.name" :props="props">
-                  {{ col.value }}
-                </q-td>
-              </q-tr>
-            </template>
-          </q-table>
-        </q-card-section>
-      </q-card>
-    </q-dialog>
   </q-page>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed } from 'vue';
 import { api } from 'boot/axios';
 import { useQuasar } from 'quasar';
 
 const $q = useQuasar();
 const suppliers = ref<any[]>([]);
 const items = ref<any[]>([]);
-const showItemSelector = ref(false);
-const itemSearch = ref('');
 const saving = ref(false);
+const itemSearch = ref('');
 
 const paymentMethods = ['Efectivo', 'Tarjeta de Crédito', 'Transferencia'];
 
@@ -293,21 +269,6 @@ const columns = [
   { name: 'actions', label: 'Acciones', align: 'center' }
 ];
 
-const itemColumns = [
-  { name: 'code', label: 'Código', field: 'code', sortable: true, align: 'left' },
-  { name: 'name', label: 'Nombre', field: 'name', sortable: true, align: 'left' },
-  { name: 'category', label: 'Categoría', field: 'category', sortable: true, align: 'left' },
-  { 
-    name: 'price', 
-    label: 'Precio', 
-    field: 'price', 
-    sortable: true, 
-    align: 'right',
-    format: val => formatCurrency(val)
-  },
-  { name: 'stock', label: 'Stock', field: 'stock', sortable: true, align: 'right' }
-];
-
 const calculateSubtotal = computed(() => {
   return purchase.value.items.reduce((sum, item) => {
     return sum + (item.purchasePrice * item.quantity);
@@ -332,22 +293,45 @@ const calculateTotal = computed(() => {
   return calculateSubtotal.value - calculateDiscount.value + calculateVAT.value;
 });
 
-const filteredItems = computed(() => {
-  if (!itemSearch.value || !items.value) return items.value;
-  
-  const searchTerm = itemSearch.value.toLowerCase();
-  return items.value.filter(item => 
-    item?.code?.toLowerCase().includes(searchTerm) ||
-    item?.name?.toLowerCase().includes(searchTerm) ||
-    item?.category?.toLowerCase().includes(searchTerm)
-  );
-});
-
 function formatCurrency(value: number): string {
   return new Intl.NumberFormat('es-CO', {
     style: 'currency',
     currency: 'COP'
   }).format(value);
+}
+
+async function filterItems(val: string, update: (callback: () => void) => void) {
+  if (val.length < 3) {
+    update(() => {
+      items.value = [];
+    });
+    return;
+  }
+
+  try {
+    update(async () => {
+      const response = await api.get(`/items?search=${val}`);
+      items.value = response.data.map((item: any) => ({
+        ...item,
+        label: `${item.code} - ${item.name}`
+      }));
+    });
+  } catch (error) {
+    console.error('Error fetching items:', error);
+    $q.notify({
+      type: 'negative',
+      message: 'Error al buscar artículos',
+      position: 'top'
+    });
+  }
+}
+
+function onItemSelect(item: any) {
+  if (item) {
+    currentItem.value.item = item;
+    currentItem.value.purchasePrice = item.price || 0;
+    currentItem.value.salePrice = item.price ? item.price * 1.3 : 0;
+  }
 }
 
 function addItem() {
@@ -361,7 +345,7 @@ function addItem() {
       discount: 0,
       quantity: 1
     };
-    showItemSelector.value = false;
+    itemSearch.value = '';
   }
 }
 
@@ -369,21 +353,14 @@ function removeItem(index: number) {
   purchase.value.items.splice(index, 1);
 }
 
-function selectItem(item: any) {
-  currentItem.value.item = item;
-  currentItem.value.purchasePrice = item.price || 0;
-  currentItem.value.salePrice = item.price ? item.price * 1.3 : 0;
-  showItemSelector.value = false;
-}
-
 async function savePurchase() {
   try {
     saving.value = true;
     await api.post('/purchases', purchase.value);
     $q.notify({
-      color: 'positive',
+      type: 'positive',
       message: 'Compra guardada exitosamente',
-      icon: 'check'
+      position: 'top'
     });
     purchase.value = {
       supplier: null,
@@ -395,9 +372,9 @@ async function savePurchase() {
     };
   } catch (error: any) {
     $q.notify({
-      color: 'negative',
+      type: 'negative',
       message: `Error al guardar la compra: ${error.message}`,
-      icon: 'error'
+      position: 'top'
     });
   } finally {
     saving.value = false;
@@ -406,24 +383,20 @@ async function savePurchase() {
 
 async function loadInitialData() {
   try {
-    const [suppliersResponse, itemsResponse] = await Promise.all([
-      api.get('/suppliers'),
-      api.get('/items')
+    const [suppliersResponse] = await Promise.all([
+      api.get('/suppliers')
     ]);
     suppliers.value = suppliersResponse.data || [];
-    items.value = itemsResponse.data || [];
   } catch (error: any) {
     $q.notify({
-      color: 'negative',
+      type: 'negative',
       message: `Error al cargar datos iniciales: ${error.message}`,
-      icon: 'error'
+      position: 'top'
     });
   }
 }
 
-onMounted(() => {
-  loadInitialData();
-});
+loadInitialData();
 </script>
 
 <style lang="scss" scoped>
@@ -435,13 +408,5 @@ onMounted(() => {
 
 .text-h6 {
   font-size: 14px !important;
-}
-
-.q-dialog {
-  .q-table {
-    tbody tr:hover {
-      background: rgba(25, 118, 210, 0.05);
-    }
-  }
 }
 </style>
